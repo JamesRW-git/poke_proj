@@ -1,4 +1,13 @@
 getPokemon(1);
+searchPokemon();
+
+function searchPokemon() {
+    $('#search-by-name-btn').on("click", function() {
+        let pokemon = $('#search-by-name').val().toLowerCase();
+        getPokemon(pokemon);
+        $('#search-by-name').val('');
+    })
+}
 
 function getPokemon(idOrName) {
     fetch(`https://pokeapi.co/api/v2/pokemon/${idOrName}`)
@@ -20,7 +29,7 @@ function getSanitizedData(dataBody) {
 }
 
 function getPokemonTypes(pokemon) {
-    let html = `<p>`;
+    let html = `<p class="ms-1">`;
     for (let i = 0; i < pokemon.pokemonTypes.length; i++) {
         if(i < pokemon.pokemonTypes.length - 1) {
             html += `${pokemon.pokemonTypes[i].type.name}, `
@@ -35,10 +44,16 @@ function getPokemonTypes(pokemon) {
 function renderSinglePokemon(pokemon) {
     //language=HTML
     $('#selected-pokemon').html(`
-        <h3>Name: ${pokemon.pokemonName}</h3>
-        <p>Type: ${getPokemonTypes(pokemon)}</p>
+        <h3>Name: ${capitalizeWord(pokemon.pokemonName)}</h3>
+        <div class="d-flex">
+            <p>Type: ${getPokemonTypes(pokemon)}</p>
+        </div>
         <p>Height: ${pokemon.pokemonHeight}</p>
         <p>Weight: ${pokemon.pokemonWeight}</p>
     `)
+}
+
+function capitalizeWord(string) {
+    return string[0].toUpperCase() + string.substring(1);
 }
 
