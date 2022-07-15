@@ -20,11 +20,13 @@ function getPokemon(idOrName) {
 }
 
 function getSanitizedData(dataBody) {
+    console.log(dataBody);
     return {
         pokemonName: dataBody.name,
-        pokemonWeight: dataBody.weight,
-        pokemonHeight: dataBody.height,
-        pokemonTypes: dataBody.types
+        pokemonWeight: (dataBody.weight / 4.536).toFixed(2),
+        pokemonHeight: (dataBody.height / 3.048).toFixed(2),
+        pokemonTypes: dataBody.types,
+        pokemonSprite: dataBody.sprites.front_default
     }
 }
 
@@ -44,12 +46,15 @@ function getPokemonTypes(pokemon) {
 function renderSinglePokemon(pokemon) {
     //language=HTML
     $('#selected-pokemon').html(`
+        <div class="d-flex justify-content-center">
+            <img src="${pokemon.pokemonSprite}" alt="${capitalizeWord(pokemon.pokemonName)}" style="height: 30vh">
+        </div>
         <h3>Name: ${capitalizeWord(pokemon.pokemonName)}</h3>
         <div class="d-flex">
             <p>Type: ${getPokemonTypes(pokemon)}</p>
         </div>
-        <p>Height: ${pokemon.pokemonHeight}</p>
-        <p>Weight: ${pokemon.pokemonWeight}</p>
+        <p>Height: ${pokemon.pokemonHeight} ft</p>
+        <p>Weight: ${pokemon.pokemonWeight} lbs</p>
     `)
 }
 
