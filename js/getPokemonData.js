@@ -1,11 +1,14 @@
 let arrayOfMoarPokemon = [];
 let moarPokemonHTML = "";
+let pageOffset = 0;
 
 clearArray();
 getPokemon(1);
 get20Pokemon();
 searchPokemon();
 moarPokemonCardsClick();
+rightPageButtonClickEvent();
+leftPageButtonClickEvent()
 
 
 function clearArray() {
@@ -80,12 +83,12 @@ function renderSinglePokemon(pokemon) {
 }
 
 function get20Pokemon() {
-    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`)
+    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${pageOffset}`)
         //no semicolons until the end because we're chaining
         .then(response => response.json())
         //arrow function must have curly braces if you have more than one line of code in the body
         .then(data => {
-            // console.log(data.results);
+            console.log(data);
             arrayOfMoarPokemon = [data.results];
             moarPokemonCards(arrayOfMoarPokemon);
         })
@@ -104,7 +107,6 @@ function moarPokemonCards(arrayOfPokemon) {
             //arrow function must have curly braces if you have more than one line of code in the body
             .then(response => getSanitizedData(response))
             .then(data => {
-                console.log(data)
                 $('#moar-pokemon').html(renderMoarPokemonCards(data));
             })
             .catch(err => console.error(err));
@@ -130,9 +132,39 @@ function capitalizeWord(string) {
 
 function moarPokemonCardsClick() {
     $(document).on('click', '.pokeCard', function() {
-        console.log($(this).data('id'));
         getPokemon($(this).data('id'));
     })
+}
+
+function rightPageButtonClickEvent() {
+    $(document).on('click', '#right-arrow-btn', function() {
+        console.log("RIGHT CLICKED");
+        if (pageOffset <= 1160){
+            pageOffset += 20;
+        }
+        console.log(pageOffset);
+        clearCards();
+        clearArray();
+        get20Pokemon();
+    })
+}
+
+function leftPageButtonClickEvent() {
+    $(document).on('click', '#left-arrow-btn', function() {
+        console.log("LEFT CLICKED")
+        if (pageOffset >= 20) {
+            pageOffset -= 20;
+        }
+        console.log(pageOffset);
+        clearCards();
+        clearArray();
+        get20Pokemon();
+    })
+}
+
+function clearCards() {
+    $('#moar-pokemon').empty();
+    moarPokemonHTML = "";
 }
 
 

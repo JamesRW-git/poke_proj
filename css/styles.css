@@ -14,3 +14,7 @@
 .pokeCard {
     border: 2px black solid;
 }
+
+.arrow {
+    height: 30vh;
+}
