@@ -1,11 +1,12 @@
 let arrayOfMoarPokemon = [];
 let moarPokemonHTML = "";
-let x = 0;
 
 clearArray();
 getPokemon(1);
 get20Pokemon();
 searchPokemon();
+moarPokemonCardsClick();
+
 
 function clearArray() {
     arrayOfMoarPokemon = [];
@@ -79,7 +80,6 @@ function renderSinglePokemon(pokemon) {
 }
 
 function get20Pokemon() {
-    //change offset to variable for pagination
     fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`)
         //no semicolons until the end because we're chaining
         .then(response => response.json())
@@ -124,8 +124,16 @@ function renderMoarPokemonCards(pokemon) {
 }
 
 
-
 function capitalizeWord(string) {
     return string[0].toUpperCase() + string.substring(1);
 }
+
+function moarPokemonCardsClick() {
+    $(document).on('click', '.pokeCard', function() {
+        console.log($(this).data('id'));
+        getPokemon($(this).data('id'));
+    })
+}
+
+
 
