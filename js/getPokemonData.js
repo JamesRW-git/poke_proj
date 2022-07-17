@@ -1,8 +1,15 @@
+let arrayOfMoarPokemon = [];
+let moarPokemonHTML = "";
+let x = 0;
+
+clearArray();
 getPokemon(1);
 get20Pokemon();
 searchPokemon();
 
-let arrayOfMoarPokemon = [];
+function clearArray() {
+    arrayOfMoarPokemon = [];
+}
 
 function searchPokemon() {
     $(document).ready(function () {
@@ -80,17 +87,15 @@ function get20Pokemon() {
         .then(data => {
             // console.log(data.results);
             arrayOfMoarPokemon = [data.results];
-            renderMoarPokemonCards(arrayOfMoarPokemon);
+            moarPokemonCards(arrayOfMoarPokemon);
         })
         .catch(err => console.error(err));
 }
 
-function renderMoarPokemonCards(arrayOfPokemon) {
+function moarPokemonCards(arrayOfPokemon) {
     arrayOfPokemon = arrayOfPokemon[0];
     // console.log(arrayOfPokemon)
-    let html = ``;
     let idOrName = '';
-    let currentPokemon;
     for (let i = 0; i < arrayOfPokemon.length; i++) {
         idOrName = arrayOfPokemon[i].name;
         fetch(`https://pokeapi.co/api/v2/pokemon/${idOrName}`)
@@ -99,17 +104,25 @@ function renderMoarPokemonCards(arrayOfPokemon) {
             //arrow function must have curly braces if you have more than one line of code in the body
             .then(response => getSanitizedData(response))
             .then(data => {
-                // console.log(data)
-                //language=HTML
-                html += `
-                <img src="${data.pokemonSprite}">
-                <h4>${data.pokemonName}</h4>
-                `
+                console.log(data)
+                $('#moar-pokemon').html(renderMoarPokemonCards(data));
             })
             .catch(err => console.error(err));
     }
-    $('#moar-pokemon').html(html);
 }
+
+function renderMoarPokemonCards(pokemon) {
+    moarPokemonHTML += `
+        <div data-id="${pokemon.pokemonName}" class="m-2 col-2 pokeCard">
+            <div class="d-flex justify-content-center">
+                <img src="${pokemon.pokemonSprite}" alt="${pokemon.pokemonName}">
+            </div>
+            <h4 class="text-center">${capitalizeWord(pokemon.pokemonName)}</h4>
+        </div>
+    `
+    return moarPokemonHTML;
+}
+
 
 
 function capitalizeWord(string) {
