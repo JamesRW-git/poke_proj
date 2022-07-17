@@ -1,0 +1,12 @@
+#main-display {
+    border: 2px black solid;
+}
+
+#search-by-name {
+    width: 20vh;
+}
+
+#main-card {
+    width : 40vh;
+    border: 2px black solid;
+}
