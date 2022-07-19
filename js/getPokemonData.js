@@ -163,7 +163,7 @@ function leftPageButtonClickEvent() {
 }
 
 function clearCards() {
-    $('#moar-pokemon').empty();
+    // $('#moar-pokemon').empty();
     moarPokemonHTML = "";
 }
 
